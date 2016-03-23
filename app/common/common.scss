@@ -1,0 +1,18 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
+
+$primary-color: #0277bd;
+$accent-color: #1de9b6;
+$bg-color: #efefef;
+$dark-bg-color: #263238;
+$light-bg-color: #37474f;
+$light-text-color: #f5f5f5;
+$dark-text-color: #212121;
+
+body {
+  height: 100%;
+  // browsers default to 16px for font-size,
+  // so setting top-level font-size to 62.5%
+  // scales 1rem to equal 10px.
+  font-size: 62.5%;
+  font-family:Roboto , sans-serif;
+}

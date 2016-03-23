@@ -3,7 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpackCombineLoaders = require('webpack-combine-loaders');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     devtool: 'eval-source-map',
@@ -12,9 +12,9 @@ module.exports = {
         path.join(__dirname, 'app/app.js')
     ],
     output: {
-        path: path.join(__dirname, '/client/'),
+        path: path.join(__dirname, 'dist'),
         filename: '[name].js',
-        publicPath: '/'
+        publicPath: '/dist'
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -32,26 +32,27 @@ module.exports = {
         // Automatically move all modules defined outside of application directory to vendor bundle.
         // If you are using more complicated project structure, consider to specify common chunks manually.
         new webpack.optimize.CommonsChunkPlugin({
-          name: 'vendor',
-          minChunks: function(module, count) {
-            return module.resource && module.resource.indexOf(path.resolve(__dirname, 'client')) === -1;
-          }
-        })
+            name: 'vendor',
+            minChunks: function(module, count) {
+                return module.resource && module.resource.indexOf(path.resolve(__dirname, 'app')) === -1;
+            }
+        }),
+        new ExtractTextPlugin("[name].css")
     ],
     module: {
         loaders: [{
-            test: /app.*\.js?$/,
+            test: /\.js?$/,
             exclude: /node_modules/,
             loader: 'ng-annotate!babel'
         }, {
             test: /\.json?$/,
             loader: 'json'
         }, {
-            test: /\.css$/,
-            loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
+            test: /\.scss$/,
+            loaders: ['style', 'css', 'sass']
         }, {
-            test: /\.styl$/,
-            loader: 'style!css!stylus'
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
         }, {
             test: /\.html$/,
             loader: 'raw'
